@@ -110,4 +110,4 @@ xss:
 #面单地址
 sdlcups:
   address: /home/seedeer/app/sdlcksups/server/printLabel
-  addressPrefix: http://localhost
+  addressPrefix: http://mk.goodscbm.com/sdlcksups
