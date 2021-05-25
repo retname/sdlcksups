@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ordermanager.project.ups.mapper.ApiLogMapper">
+
+	<resultMap type="ApiLog" id="ApiLogResult">
+		<id     property="id"       column="id"/>
+		<result property="apiUrl"     column="api_url"/>
+		<result property="requestParams"      column="request_params"/>
+		<result property="responseStatus"     column="response_status"/>
+		<result property="responseBody"    column="response_body"/>
+		<result property="requestHeader"       column="request_header"/>
+		<result property="createTime"      column="create_time"/>
+	</resultMap>
+
+	<sql id="selectApiLogVo">
+		select id,api_url,request_params,request_header,response_status,response_body,create_time from api_log
+	</sql>
+
+	<select id="selectApiLogList" parameterType="ApiLog" resultMap="ApiLogResult">
+		<include refid="selectApiLogVo"/>
+		<where>
+			<if test="requestParams != null and requestParams != ''">
+				AND requestParams like concat('%', #{requestParams}, '%')
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertApiLog" useGeneratedKeys ="true" keyProperty = "id" parameterType="ApiLog">
+		insert into api_log(
+		<if test="apiUrl != null and apiUrl != ''">api_url,</if>
+		<if test="requestParams != null and requestParams != ''">request_params,</if>
+		<if test="responseStatus != null and responseStatus != ''">response_status,</if>
+		<if test="responseBody != null and responseBody != ''">response_body,</if>
+		<if test="requestHeader != null and requestHeader != ''">request_header,</if>
+		create_time
+		)values(
+		<if test="apiUrl != null and apiUrl != ''">#{apiUrl},</if>
+		<if test="requestParams != null and requestParams != ''">#{requestParams},</if>
+		<if test="responseStatus != null and responseStatus != ''">#{responseStatus},</if>
+		<if test="responseBody != null and responseBody != ''">#{responseBody},</if>
+		<if test="requestHeader != null and requestHeader != ''">#{requestHeader},</if>
+		sysdate()
+		)
+	</insert>
+
+</mapper> 

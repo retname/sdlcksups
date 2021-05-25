@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ordermanager.project.ups.mapper.CreateOrderMapper">
+
+	<resultMap type="CreateOrder" id="CreateOrderResult">
+		<id     property="id"       column="id"/>
+		<result property="orderNumber"     column="order_number"/>
+		<result property="responseStatus"      column="response_status"/>
+		<result property="trackingNumber"     column="tracking_number"/>
+		<result property="labelUrl"    column="label_url"/>
+		<result property="format"       column="format"/>
+		<result property="orderNo"      column="order_no"/>
+		<result property="price"     column="price"/>
+		<result property="priceDetail"   column="price_detail"/>
+		<result property="packageDetail"     column="package_detail"/>
+		<result property="createTime"   column="create_time"/>
+		<result property="result"       column="result"/>
+		<result property="pdfAddress"       column="pdf_address"/>
+		<result property="pngAddress"       column="png_address"/>
+	</resultMap>
+
+
+
+    <select id="getIsEmptyTrackingNum" resultMap="CreateOrderResult">
+         select * from create_order where ISNULL(tracking_number) and response_status = #{responseStatus}
+    </select>
+
+
+	<update id="updateByOrderNo" parameterType="java.lang.String">
+		update create_order set
+		tracking_number = #{trackingNo},
+		label_url = #{pdfUrl},
+		pdf_address=#{pdfAddress},
+		png_address=#{pngAddress},
+		format = #{format}
+		where order_no = #{orderNo}
+	</update>
+
+	<select id="getByFormatAndOrderNum" parameterType="java.lang.String" resultType="java.util.Map">
+          SELECT order_no,order_number,tracking_number,pdf_address,png_address from create_order
+          where  order_number in
+		  <foreach item="item" index="orderNumbers" collection="list" open="(" separator="," close=")">
+			#{item}
+		  </foreach>
+	</select>
+	
+	<select id="getByOrderNumber" parameterType="string" resultMap="CreateOrderResult">
+           select * from create_order where order_number = #{orderNumber}
+	</select>
+
+	<sql id="selectCreateOrder">
+		select order_number,response_status,tracking_number,label_url,order_no,price,price_detail,package_detail,create_time,result from create_order
+	</sql>
+
+	<select id="selectCreateOrderList" parameterType="CreateOrder" resultMap="CreateOrderResult">
+		<include refid="selectCreateOrder"/>
+		<where>
+			<if test="orderNumber != null and orderNumber != ''">
+				AND order_number like concat('%', #{order_number}, '%')
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertCreateOrder" useGeneratedKeys ="true" keyProperty = "id" parameterType="CreateOrder">
+		insert into create_order(
+		<if test="orderNumber != null and orderNumber != ''">order_number,</if>
+		<if test="responseStatus != null and responseStatus != ''">response_status,</if>
+		<if test="trackingNumber != null and trackingNumber != ''">tracking_number,</if>
+		<if test="labelUrl != null and labelUrl != ''">label_url,</if>
+		<if test="format != null and format != ''">format,</if>
+		<if test="orderNo != null and orderNo != ''">order_no,</if>
+		<if test="price != null and price != ''">price,</if>
+		<if test="priceDetail != null and priceDetail != ''">price_detail,</if>
+		<if test="packageDetail != null and packageDetail != ''">package_detail,</if>
+		<if test="result != null and result != ''">result,</if>
+		<if test="pdfAddress != null and pdfAddress != ''">pdf_address,</if>
+		<if test="pngAddress != null and pngAddress != ''">png_address,</if>
+		create_time
+		)values(
+		<if test="orderNumber != null and orderNumber != ''">#{orderNumber},</if>
+		<if test="responseStatus != null and responseStatus != ''">#{responseStatus},</if>
+		<if test="trackingNumber != null and trackingNumber != ''">#{trackingNumber},</if>
+		<if test="labelUrl != null and labelUrl != ''">#{labelUrl},</if>
+		<if test="format != null and format != ''">#{format},</if>
+		<if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+		<if test="price != null and price != ''">#{price},</if>
+		<if test="priceDetail != null and priceDetail != ''">#{priceDetail},</if>
+		<if test="packageDetail != null and packageDetail != ''">#{packageDetail},</if>
+		<if test="result != null and result != ''">#{result},</if>
+		<if test="pdfAddress != null and pdfAddress != ''">#{pdfAddress},</if>
+		<if test="pngAddress != null and pngAddress != ''">#{pngAddress},</if>
+		sysdate()
+		)
+	</insert>
+
+</mapper> 

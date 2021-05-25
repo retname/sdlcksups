@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								<label>请求参数： </label><input type="text" name="requestParams"/>
+							</li>
+							<li class="select-time">
+								<label>操作时间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+	        
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+
+		$(function() {
+		    var options = {
+		        url:"/apilog/list",
+		        modalName: "api操作列表",
+		        search: false,
+		        showExport: false,
+		        escape: true,
+		        columns: [
+		        {
+                    field: 'apiUrl',
+		            title: '请求url'
+		        },
+		        {
+                    field: 'requestParams',
+		            title: '请求参数'
+		        },
+		        {
+                    field: 'requestHeader',
+		            title: '请求头',
+		        },
+		        {
+                    field: 'responseStatus',
+		            title: '响应状态'
+		        },
+		        {
+                    field: 'responseBody',
+		            title: '响应体'
+		        },
+		        {
+                    field: 'createTime',
+		            title: '操作时间',
+                    sortable: true
+		        }]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ordermanager.project.ups.mapper.ProviceMapper">
+
+	<resultMap type="Provice" id="ProviceResult">
+		<id     property="id"       column="id"/>
+		<result property="country"     column="country"/>
+		<result property="stateCode"      column="state_code"/>
+		<result property="stateName"     column="state_name"/>
+		<result property="stateNameCn"    column="state_name_cn"/>
+		<result property="createTime"       column="create_time"/>
+		<result property="updateTime"      column="update_time"/>
+		<result property="deleteFlag"      column="delete_flag"/>
+	</resultMap>
+
+	<select id="getByStateName" resultMap="ProviceResult">
+         select * from provice where state_name = #{stateName}
+    </select>
+
+
+
+</mapper> 
