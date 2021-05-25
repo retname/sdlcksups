@@ -106,10 +106,10 @@
 
 		<!--阿里数据库连接池 -->
 		<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
 
 		<!--常用工具类 -->
 		<dependency>
@@ -193,17 +193,17 @@
 			<version>2.0.8</version>
 		</dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox-tools -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox-tools</artifactId>
-            <version>2.0.8</version>
-        </dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox-tools -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox-tools</artifactId>
+			<version>2.0.8</version>
+		</dependency>
 
 
 
 
-        <!-- 定时任务 -->
+		<!-- 定时任务 -->
 		<!--<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -228,12 +228,12 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna-platform</artifactId>
@@ -255,35 +255,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+					<includeSystemScope>true</includeSystemScope>
+					<mainClass>com.ordermanager.OrderManagerApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>public</id>
-			<name>aliyun nexus</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>public</id>
-			<name>aliyun nexus</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>
